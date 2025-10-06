@@ -1,0 +1,169 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Базовый класс Аэропорт
+class Airport {
+protected:
+    string name;           // Название
+    string location;       // Место расположения
+    int flightCount;       // Количество рейсов
+    string status;         // Статус
+
+public:
+    // Конструктор без параметров
+    Airport() {
+        name = "Неизвестно";
+        location = "Неизвестно";
+        flightCount = 0;
+        status = "Неактивен";
+    }
+
+    // Конструктор с параметрами
+    Airport(string n, string loc, int count, string stat) {
+        name = n;
+        location = loc;
+        flightCount = count;
+        status = stat;
+    }
+
+    // Методы для редактирования полей
+    void setName(string n) {
+        name = n;
+    }
+
+    void setLocation(string loc) {
+        location = loc;
+    }
+
+    void setFlightCount(int count) {
+        flightCount = count;
+    }
+
+    void setStatus(string stat) {
+        status = stat;
+    }
+
+    // Методы для получения значений полей
+    string getName() const {
+        return name;
+    }
+
+    string getLocation() const {
+        return location;
+    }
+
+    int getFlightCount() const {
+        return flightCount;
+    }
+
+    string getStatus() const {
+        return status;
+    }
+
+    // Метод для вывода всех характеристик
+    virtual void displayInfo() const {
+        cout << "=== Информация об аэропорте ===" << endl;
+        cout << "Название: " << name << endl;
+        cout << "Место расположения: " << location << endl;
+        cout << "Количество рейсов: " << flightCount << endl;
+        cout << "Статус: " << status << endl;
+        cout << "===============================" << endl;
+    }
+
+    // Виртуальный деструктор
+    virtual ~Airport() {}
+};
+
+// Класс-наследник Рейс
+class Flight : public Airport {
+private:
+    string flightNumber;   // Номер рейса
+    int capacity;          // Вместимость
+
+public:
+    // Конструктор без параметров
+    Flight() : Airport() {
+        flightNumber = "Неизвестно";
+        capacity = 0;
+    }
+
+    // Конструктор с параметрами
+    Flight(string n, string loc, int count, string stat, 
+           string fNumber, int cap) : Airport(n, loc, count, stat) {
+        flightNumber = fNumber;
+        capacity = cap;
+    }
+
+    // Методы для редактирования дополнительных полей
+    void setFlightNumber(string fNumber) {
+        flightNumber = fNumber;
+    }
+
+    void setCapacity(int cap) {
+        capacity = cap;
+    }
+
+    // Методы для получения значений дополнительных полей
+    string getFlightNumber() const {
+        return flightNumber;
+    }
+
+    int getCapacity() const {
+        return capacity;
+    }
+
+    // Переопределение метода для вывода всех характеристик
+    void displayInfo() const override {
+        cout << "=== Информация о рейсе ===" << endl;
+        cout << "Название аэропорта: " << name << endl;
+        cout << "Место расположения: " << location << endl;
+        cout << "Количество рейсов в аэропорту: " << flightCount << endl;
+        cout << "Статус аэропорта: " << status << endl;
+        cout << "Номер рейса: " << flightNumber << endl;
+        cout << "Вместимость: " << capacity << " пассажиров" << endl;
+        cout << "===========================" << endl;
+    }
+};
+
+// Демонстрация работы классов
+int main() {
+    cout << "Демонстрация работы классов:" << endl << endl;
+
+    // Создание объекта базового класса
+    Airport airport1("Шереметьево", "Москва", 150, "Активен");
+    cout << "Базовый класс Аэропорт:" << endl;
+    airport1.displayInfo();
+
+    cout << endl;
+
+    // Создание объекта класса-наследника
+    Flight flight1("Домодедово", "Москва", 200, "Активен", 
+                   "SU-1234", 180);
+    cout << "Класс-наследник Рейс:" << endl;
+    flight1.displayInfo();
+
+    cout << endl;
+
+    // Демонстрация редактирования полей
+    cout << "Редактирование полей:" << endl;
+    Flight flight2;
+    flight2.setName("Пулково");
+    flight2.setLocation("Санкт-Петербург");
+    flight2.setFlightCount(100);
+    flight2.setStatus("Активен");
+    flight2.setFlightNumber("SU-5678");
+    flight2.setCapacity(210);
+    flight2.displayInfo();
+
+    cout << endl;
+
+    // Демонстрация получения значений
+    cout << "Получение значений полей:" << endl;
+    cout << "Название: " << flight2.getName() << endl;
+    cout << "Номер рейса: " << flight2.getFlightNumber() << endl;
+    cout << "Вместимость: " << flight2.getCapacity() << endl;
+
+    return 0;
+}
